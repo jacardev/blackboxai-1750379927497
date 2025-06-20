@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Senha - Gerenciador de Senhas{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="card form-card">
+        <div class="form-header">
+            <h2>Editar Senha</h2>
+            <a href="{% url 'dashboard' %}" class="btn-back">Voltar ao Dashboard</a>
+        </div>
+
+        <form method="post" class="password-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="field-errors">
+                            {% for error in field.errors %}
+                                <span class="error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+                <div class="non-field-errors">
+                    {% for error in form.non_field_errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Atualizar Senha</button>
+                <a href="{% url 'delete_record' record_id %}" class="btn btn-danger"
+                   onclick="return confirm('Tem certeza que deseja excluir esta senha?')">
+                    Excluir Senha
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-container {
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+    }
+
+    .form-card {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .form-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+        color: var(--color-terracotta);
+        font-size: 1.8rem;
+        margin: 0;
+    }
+
+    .btn-back {
+        color: var(--color-terracotta);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .btn-back:hover {
+        color: var(--color-terracotta-dark);
+    }
+
+    .password-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .password-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--color-gray);
+        font-weight: 500;
+    }
+
+    .password-form input,
+    .password-form textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e1e1e1;
+        border-radius: var(--border-radius);
+        font-family: inherit;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .password-form input:focus,
+    .password-form textarea:focus {
+        border-color: var(--color-terracotta);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.1);
+    }
+
+    .password-form textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .form-actions {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .form-actions .btn {
+        flex: 1;
+        padding: 1rem;
+    }
+
+    .btn-danger {
+        background-color: var(--color-error);
+    }
+
+    .btn-danger:hover {
+        background-color: #c45a42;
+    }
+
+    .field-errors,
+    .non-field-errors {
+        color: var(--color-error);
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 1rem;
+        }
+
+        .form-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .btn-back {
+            align-self: flex-end;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .form-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
